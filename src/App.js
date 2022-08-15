@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import './index.css';
+import "./index.css";
 import CountryCard from "./components/CountryCard";
 
 function App() {
@@ -12,39 +12,45 @@ function App() {
     setLoading(true);
     axios
       .get("https://restcountries.com/v3.1/all")
-      .then(res => {
+      .then((res) => {
         setCountries(res.data);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);
 
   useEffect(() => {
     setFilteredCountries(
-      countries.filter(({name}) =>{
-       return name.common.toLowerCase().includes(search.toLowerCase())
-  })
+      countries.filter(({ name }) => {
+        return name.common.toLowerCase().includes(search.toLowerCase());
+      })
     );
   }, [search, countries]);
 
   if (loading) {
-    return <p>Loading countries...</p>;
+    return (
+      <div className="flex justify-center items-center h-screen w-screen">
+        <h1>Loading...</h1>
+      </div>
+    );
   }
 
   return (
-    <div className="App">
+    <div className=" container p-2 flex flex-col items-center">
       <h1>Countries Lists</h1>
       <input
         className="search"
         type="text"
         placeholder="Search Countries"
-        onChange={e => setSearch(e.target.value)}
+        onChange={(e) => setSearch(e.target.value)}
       />
-      {filteredCountries.map((country, idx) => (
-        <CountryCard key={idx} {...country} />
-      ))}
+      <div className="">
+        {filteredCountries.map((country, idx) => (
+          <CountryCard key={idx} data={country} />
+        ))}
+      </div>
     </div>
   );
 }
